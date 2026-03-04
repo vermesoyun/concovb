@@ -6,225 +6,259 @@
 <title>Craft Hosting Bilgilendirme</title>
 <style>
 :root {
-    --bg-color: #1e3c72;
-    --bg-color-light: #ffffff;
-    --text-color: #ffffff;
-    --text-color-light: #000000;
-    --primary: #4a90e2;
+  --bg-dark: #1e3c72;
+  --bg-light: #ffffff;
+  --text-dark: #ffffff;
+  --text-light: #000000;
+  --primary: #4a90e2;
+  --accent: #2a5298;
 }
 body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--bg-color);
-    color: var(--text-color);
-    overflow-x: hidden;
-    transition: background 0.5s, color 0.5s;
+  margin:0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  transition: background 0.5s, color 0.5s;
+  overflow-x:hidden;
 }
-header {
-    text-align: center;
-    padding: 60px 20px;
-    background: linear-gradient(90deg, #4a90e2, #2a5298);
-    position: relative;
-    overflow: hidden;
+header{
+  text-align:center;
+  padding:60px 20px;
+  background: linear-gradient(90deg,var(--primary),var(--accent));
+  position:relative;
+  overflow:hidden;
 }
-header h1 {
-    font-size: 3rem;
-    margin: 0 0 10px 0;
-    animation: fadeInDown 1s ease forwards;
+header h1{
+  font-size:3rem;
+  margin:0 0 10px 0;
+  animation:fadeInDown 1s ease forwards;
+  position:relative;
 }
-header p {
-    font-size: 1.3rem;
-    color: #d0e6ff;
-    animation: fadeInUp 1s ease 0.3s forwards;
-    opacity: 0;
+header h1::after{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,rgba(255,255,255,0.7),rgba(255,255,255,0));
+  top:0; left:0;
+  animation: slideLight 2s linear infinite;
 }
-main {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
+header p{
+  font-size:1.3rem;
+  color: #d0e6ff;
+  animation:fadeInUp 1s ease 0.3s forwards;
+  opacity:0;
 }
-section {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-    position: relative;
-    perspective: 1000px;
+main{
+  max-width:1000px;
+  margin:40px auto;
+  padding:20px;
 }
-section:hover {
-    transform: rotateY(3deg) translateY(-5px);
-    box-shadow: 0 10px 25px rgba(74,144,226,0.6);
-    background: rgba(255,255,255,0.1);
+section{
+  margin-bottom:30px;
+  padding:25px;
+  background: rgba(255,255,255,0.05);
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  transition:transform 0.3s,box-shadow 0.3s,background 0.3s;
+  perspective:1000px;
+  opacity:0;
+  transform: translateY(50px);
 }
-h2 {
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: color 0.3s;
+section:hover{
+  transform: rotateY(3deg) translateY(-5px);
+  box-shadow:0 10px 25px rgba(74,144,226,0.6);
+  background: rgba(255,255,255,0.1);
 }
-h2 .icon {
-    display: inline-block;
-    animation: bounce 2s infinite;
+h2{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:0;
+  transition: color 0.3s;
 }
-h2:hover {
-    color: #ffffff;
+h2 .icon{
+  display:inline-block;
+  animation:bounce 2s infinite;
 }
-p {
-    line-height: 1.6;
-    transition: transform 0.3s;
+h2:hover{
+  color:#ffffff;
 }
-p:hover {
-    transform: translateX(5px);
+p{
+  line-height:1.6;
+  transition: transform 0.3s;
 }
-button {
-    background: linear-gradient(45deg, #4a90e2, #2a5298);
-    color: #ffffff;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.2s, box-shadow 0.2s;
+p:hover{
+  transform: translateX(5px);
 }
-button::before {
-    content: "🚀";
-    margin-right: 10px;
+button{
+  background: linear-gradient(45deg,var(--primary),var(--accent));
+  color:#fff;
+  border:none;
+  padding:12px 30px;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:bold;
+  overflow:hidden;
+  position:relative;
+  transition:transform 0.2s, box-shadow 0.2s;
 }
-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+button::before{
+  content:"🚀";
+  margin-right:10px;
 }
-button:active::after {
-    animation: ripple 0.6s linear;
+button:hover{
+  transform: scale(1.1);
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
 }
-button::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: rgba(255,255,255,0.3);
-    display: block;
-    border-radius: 50%;
-    transform: scale(0);
-    pointer-events: none;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0);
+button:active::after{
+  animation:ripple 0.6s linear;
 }
-footer {
-    text-align: center;
-    padding: 20px;
-    border-top: 1px solid rgba(255,255,255,0.2);
+button::after{
+  content:'';
+  position:absolute;
+  width:20px;
+  height:20px;
+  background: rgba(255,255,255,0.3);
+  display:block;
+  border-radius:50%;
+  transform: scale(0);
+  pointer-events:none;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%) scale(0);
 }
-.social-icons a {
-    margin: 0 10px;
-    font-size: 1.3rem;
-    color: var(--text-color);
-    transition: color 0.3s;
+footer{
+  text-align:center;
+  padding:20px;
+  border-top:1px solid rgba(255,255,255,0.2);
 }
-.social-icons a:hover {
-    color: var(--primary);
+.social-icons a{
+  margin:0 10px;
+  font-size:1.3rem;
+  color: var(--text-dark);
+  transition: transform 0.3s,color 0.3s;
 }
-#particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
+.social-icons a:hover{
+  color:var(--primary);
+  transform: scale(1.2);
 }
-#darkModeToggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    padding: 10px 15px;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-    background: var(--primary);
-    color: #fff;
-    z-index: 1000;
+#particles{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
 }
-@keyframes fadeInDown {0% {opacity:0; transform: translateY(-20px);}100%{opacity:1; transform:translateY(0);}}
-@keyframes fadeInUp {0% {opacity:0; transform: translateY(20px);}100%{opacity:1; transform:translateY(0);}}
-@keyframes bounce {0%,20%,50%,80%,100%{transform: translateY(0);}40%{transform: translateY(-8px);}60%{transform: translateY(-4px);}}
-@keyframes ripple {0%{transform: translate(-50%, -50%) scale(0);}50%{transform: translate(-50%, -50%) scale(2);}100%{transform: translate(-50%, -50%) scale(0);}}
+#darkModeToggle{
+  position:fixed;
+  top:20px;
+  left:20px;
+  padding:10px 15px;
+  cursor:pointer;
+  border:none;
+  border-radius:10px;
+  background: var(--primary);
+  color:#fff;
+  z-index:1000;
+}
+#ticker{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background: rgba(74,144,226,0.85);
+  color:#fff;
+  overflow:hidden;
+  white-space:nowrap;
+  padding:5px 0;
+  font-weight:bold;
+}
+#ticker span{
+  display:inline-block;
+  padding-right:50px;
+  animation: tickerAnim 20s linear infinite;
+}
+@keyframes fadeInDown{0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUp{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0);}40%{transform:translateY(-8px);}60%{transform:translateY(-4px);}}
+@keyframes ripple{0%{transform:translate(-50%,-50%) scale(0);}50%{transform:translate(-50%,-50%) scale(2);}100%{transform:translate(-50%,-50%) scale(0);}}
+@keyframes slideLight{0%{left:-100%;}100%{left:100%;}}
+@keyframes tickerAnim{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
 </style>
 </head>
 <body>
 
 <div id="particles"></div>
 <button id="darkModeToggle">🌙</button>
+<div id="ticker"><span>Craft Hosting ile güvenli ve saglam sunucular • Hemen Başla! • 7/24 Destek</span></div>
 
 <header>
-    <h1>Craft Hosting Bilgilendirme</h1>
-    <p>DDOS korumalı, güvenli ve hızlı</p>
+<h1>Craft Hosting Bilgilendirme</h1>
+<p>DDOS korumalı, güvenli ve hızlı</p>
 </header>
 
 <main>
-    <section>
-        <h2><span class="icon"></span> Hızlı ve Güvenlik</h2>
-        <p>Sunucularımız en yüksek performanslıdır ve güvenlidir. 7/24 aktif DDOS koruması ile veri güvenliğiniz garanti altındadır.</p>
-    </section>
-
-    <section>
-        <h2><span class="icon"></span> Kullanım Kolaylığı</h2>
-        <p>Panelimiz basit, modern ve kullanıcı dostudur. Hosting işlemlerinizi tek tıkla yönetebilirsiniz.</p>
-    </section>
-
-    <section>
-        <h2><span class="icon"></span> 7/24 Destek</h2>
-        <p>Uzman ekibimiz her zaman hizmetinizde. Sorularınızı anında yanıtlıyoruz.</p>
-    </section>
-
-    <section style="text-align:center;">
-        <button onclick="window.location.href='https://client.crafthosting.com.tr/market'">Hemen Başla</button>
-    </section>
+<section>
+<h2><span class="icon">⚡</span> Hızlı ve Güvenlik</h2>
+<p>Sunucularımız en yüksek performanslıdır ve güvenlidir. 7/24 aktif DDOS koruması ile veri güvenliğiniz garanti altındadır.</p>
+</section>
+<section>
+<h2><span class="icon">🖥️</span> Kullanım Kolaylığı</h2>
+<p>Panelimiz basit, modern ve kullanıcı dostudur. Hosting işlemlerinizi tek tıkla yönetebilirsiniz.</p>
+</section>
+<section>
+<h2><span class="icon">💬</span> 7/24 Destek</h2>
+<p>Uzman ekibimiz her zaman hizmetinizde. Sorularınızı anında yanıtlıyoruz.</p>
+</section>
+<section style="text-align:center;">
+<button onclick="window.location.href='https://client.crafthosting.com.tr/market'">Hemen Başla</button>
+</section>
 </main>
 
 <footer>
-    © 2026 Craft Hosting Bilgilendirme Sitesi
-    <div class="social-icons">
-        <a href="#" target="_blank"></a>
-        <a href="#" target="_blank"></a>
-        <a href="#" target="_blank"></a>
-    </div>
+© 2026 Craft Hosting Bilgilendirme Sitesi
+<div class="social-icons">
+<a href="#" target="_blank"></a>
+<a href="#" target="_blank"></a>
+<a href="#" target="_blank"></a>
+</div>
 </footer>
 
 <script>
-const toggle = document.getElementById('darkModeToggle');
-toggle.addEventListener('click', () => {
-    if(document.body.style.background === 'var(--bg-color-light)'){
-        document.body.style.background = 'var(--bg-color)';
-        document.body.style.color = 'var(--text-color)';
-    } else {
-        document.body.style.background = 'var(--bg-color-light)';
-        document.body.style.color = 'var(--text-color-light)';
-    }
-});
-
-const particlesContainer = document.getElementById('particles');
-for(let i=0;i<50;i++){
-    let particle = document.createElement('div');
-    particle.style.position='absolute';
-    particle.style.width='5px';
-    particle.style.height='5px';
-    particle.style.background='rgba(255,255,255,0.3)';
-    particle.style.borderRadius='50%';
-    particle.style.top=Math.random()*100+'%';
-    particle.style.left=Math.random()*100+'%';
-    particle.animate([
-        {transform:'translateY(0px)'},
-        {transform:'translateY(-100px)'}
-    ], {duration:5000+Math.random()*5000, iterations:Infinity});
-    particlesContainer.appendChild(particle);
+const toggle=document.getElementById('darkModeToggle');
+toggle.addEventListener('click',()=>{
+if(document.body.style.background==='var(--bg-light)'){
+document.body.style.background='var(--bg-dark)';
+document.body.style.color='var(--text-dark)';
+}else{
+document.body.style.background='var(--bg-light)';
+document.body.style.color='var(--text-light)';
 }
+});
+const particles=document.getElementById('particles');
+for(let i=0;i<80;i++){
+let p=document.createElement('div');
+p.style.position='absolute';
+p.style.width='5px';
+p.style.height='5px';
+p.style.background='rgba(255,255,255,0.3)';
+p.style.borderRadius='50%';
+p.style.top=Math.random()*100+'%';
+p.style.left=Math.random()*100+'%';
+p.animate([{transform:'translateY(0px)'},{transform:'translateY(-150px)'}],{duration:5000+Math.random()*5000,iterations:Infinity});
+particles.appendChild(p);
+}
+window.addEventListener('scroll',()=>{
+document.querySelectorAll('section').forEach(s=>{
+let top=s.getBoundingClientRect().top;
+if(top<window.innerHeight-100){
+s.style.opacity=1;
+s.style.transform='translateY(0)';
+}
+});
+});
 </script>
 
 </body>
