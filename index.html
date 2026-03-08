@@ -12,7 +12,7 @@ body {
     display:flex;
     justify-content:center;
     align-items:center;
-    background: linear-gradient(135deg, #ffffff, #38bdf8); /* Beyaz-mavi gradient */
+    background: linear-gradient(135deg, #ffffff, #38bdf8);
     color:white;
 }
 
@@ -28,14 +28,14 @@ body {
     display:block;
     margin-left:auto;
     margin-right:auto;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 10px #38bdf8) drop-shadow(0 0 20px #0ea5e9);
 }
 
 h1 {
-    font-size:36px;
+    font-size:32px;
+    margin-bottom:20px;
     color:#f0f9ff;
     text-shadow: 0 0 8px #0ea5e9, 0 0 12px #38bdf8;
-    margin-bottom:20px;
 }
 
 input {
@@ -46,22 +46,29 @@ input {
     border:none;
     outline:none;
     font-size:16px;
+    background: rgba(255,255,255,0.1);
+    color:white;
+    text-shadow: 0 0 5px #0ea5e9;
 }
+
+input::placeholder { color:#d0f0ff; }
 
 button {
     padding:10px 20px;
+    margin-top:10px;
     border:none;
     border-radius:8px;
     cursor:pointer;
     background:#38bdf8;
     color:white;
     font-weight:bold;
-    margin-top:10px;
     transition:0.3s;
+    box-shadow: 0 0 10px #38bdf8, 0 0 20px #0ea5e9;
 }
 
 button:hover {
     background:#0ea5e9;
+    box-shadow: 0 0 20px #38bdf8, 0 0 30px #0ea5e9;
 }
 
 .underline-link {
@@ -69,6 +76,7 @@ button:hover {
     cursor:pointer;
     color:#ffffff;
     font-weight:bold;
+    text-shadow: 0 0 5px #0ea5e9;
 }
 
 #logoutBtn {
@@ -82,13 +90,7 @@ button:hover {
     border-radius:6px;
     cursor:pointer;
     display:none;
-}
-
-.info {
-    margin:8px 0;
-    font-size:16px;
-    color:#f0f9ff;
-    text-shadow: 0 0 5px #0ea5e9;
+    box-shadow: 0 0 10px #f87171, 0 0 20px #f87171;
 }
 
 #message {
@@ -103,41 +105,45 @@ button:hover {
     opacity:0;
     transition: all 0.5s ease;
     font-weight:bold;
-    text-shadow: 0 0 5px #ffffff;
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #0ea5e9;
+}
+
+.info {
+    margin:8px 0;
+    font-size:16px;
+    color:#f0f9ff;
+    text-shadow: 0 0 5px #0ea5e9;
 }
 </style>
 </head>
 <body>
 
-<div id="message">Mesaj buraya gelecek</div>
+<div id="message"></div>
 <button id="logoutBtn" onclick="logout()">Çıkış Yap</button>
 
 <div class="main-container">
 
-    <img src="https://www.vox.com/the-goods/2019/1/7/18172577/mastercard-logo-change-no-words" alt="Logo" class="logo">
+    <img src="https://cdn.iconscout.com/icon/free/png-256/mastercard-3629549-3030185.png" class="logo" alt="Logo">
 
     <h1>IP Bilgi Sorgulama</h1>
 
-    
     <div id="loginBox">
-        <input id="username" placeholder="Kullanıcı Adı"><br>
-        <input id="password" type="password" placeholder="Şifre"><br>
+        <input id="username" placeholder="Kullanıcı Adı">
+        <input id="password" type="password" placeholder="Şifre">
         <button onclick="login()">Giriş Yap</button>
         <p>Hesabınız yok mu? <span class="underline-link" onclick="showRegister()">Kayıt Ol</span></p>
     </div>
 
- 
     <div id="registerBox" style="display:none;">
-        <input id="newUser" placeholder="Kullanıcı Adı"><br>
-        <input id="newPass" type="password" placeholder="Şifre"><br>
+        <input id="newUser" placeholder="Kullanıcı Adı">
+        <input id="newPass" type="password" placeholder="Şifre">
         <button onclick="register()">Kayıt Ol</button>
         <p>Zaten hesabınız var mı? <span class="underline-link" onclick="showLogin()">Giriş Yap</span></p>
     </div>
 
-  
     <div id="profile" style="display:none; margin-top:20px;">
         <h2 id="welcome"></h2>
-        <input id="ipInput" placeholder="IP adresi gir"><br>
+        <input id="ipInput" placeholder="IP adresi gir">
         <button onclick="searchIP()">Ara</button>
         <div class="info">IP: <span id="ip">-</span></div>
         <div class="info">Ülke: <span id="country">-</span></div>
@@ -153,98 +159,66 @@ button:hover {
 const defaultUser = "121212";
 const defaultPass = "121212";
 
-
 window.onload = function(){
-    if(localStorage.getItem("loggedIn") === "true"){
-        showProfile();
-    } else{
-        showLogin();
-    }
+    if(localStorage.getItem("loggedIn")==="true"){ showProfile(); } 
+    else{ showLogin(); }
 }
 
-
-function showMessage(text) {
+function showMessage(text){
     const msg = document.getElementById("message");
-    msg.innerText = text;
-    msg.style.opacity = "1";
-    msg.style.top = "20px";
-    setTimeout(()=>{
-        msg.style.opacity="0";
-        msg.style.top="0px";
-    },3000);
+    msg.innerText=text;
+    msg.style.opacity="1";
+    setTimeout(()=>{ msg.style.opacity="0"; },3000);
 }
-
 
 function login(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-    if(user === defaultUser && pass === defaultPass){
-        localStorage.setItem("loggedIn","true");
-        showProfile();
-        showMessage("Giriş başarılı!");
-    } else{
-        showMessage("Kullanıcı adı veya şifre hatalı!");
-    }
+    if(document.getElementById("username").value===defaultUser &&
+       document.getElementById("password").value===defaultPass){
+        localStorage.setItem("loggedIn","true"); showProfile(); showMessage("Giriş Başarılı");
+    } else { showMessage("Hatalı"); }
 }
 
+function register(){ showMessage("Kayıt Başarılı"); }
 
-function register(){
-    let user = document.getElementById("newUser").value;
-    let pass = document.getElementById("newPass").value;
-    if(user && pass){
-        showMessage("Kayıt başarılı! Giriş yapabilirsiniz.");
-        showLogin();
-    } else{
-        showMessage("Lütfen kullanıcı adı ve şifre girin.");
-    }
-}
-
-
-function logout(){
-    localStorage.setItem("loggedIn","false");
-    showLogin();
-    showMessage("Çıkış yapıldı.");
-}
-
+function logout(){ localStorage.setItem("loggedIn","false"); showLogin(); showMessage("Çıkış Yapıldı"); }
 
 function showProfile(){
     document.getElementById("loginBox").style.display="none";
     document.getElementById("registerBox").style.display="none";
     document.getElementById("profile").style.display="block";
     document.getElementById("logoutBtn").style.display="block";
-    document.getElementById("welcome").innerText = "Hoşgeldin " + defaultUser;
-    getIP();
+    document.getElementById("welcome").innerText="Hoşgeldin "+defaultUser;
 }
 
-// Giriş / Kayıt Görünümü
 function showLogin(){
     document.getElementById("loginBox").style.display="block";
     document.getElementById("registerBox").style.display="none";
     document.getElementById("profile").style.display="none";
     document.getElementById("logoutBtn").style.display="none";
 }
+
 function showRegister(){
     document.getElementById("loginBox").style.display="none";
     document.getElementById("registerBox").style.display="block";
     document.getElementById("profile").style.display="none";
 }
 
-
 async function getIP(){
-    let response = await fetch("https://ipapi.co/json/");
-    let data = await response.json();
-    showData(data);
+    let res=await fetch("https://ipapi.co/json/");
+    let data=await res.json();
+    document.getElementById("ip").innerText=data.ip;
+    document.getElementById("country").innerText=data.country_name;
+    document.getElementById("city").innerText=data.city;
+    document.getElementById("region").innerText=data.region;
+    document.getElementById("coord").innerText=data.latitude+" , "+data.longitude;
+    document.getElementById("isp").innerText=data.org;
 }
 
 async function searchIP(){
     let ip=document.getElementById("ipInput").value;
-    if(ip==""){ getIP(); return; }
-    let response = await fetch("https://ipapi.co/"+ip+"/json/");
-    let data = await response.json();
-    showData(data);
-}
-
-function showData(data){
+    if(ip===""){ getIP(); return; }
+    let res=await fetch("https://ipapi.co/"+ip+"/json/");
+    let data=await res.json();
     document.getElementById("ip").innerText=data.ip;
     document.getElementById("country").innerText=data.country_name;
     document.getElementById("city").innerText=data.city;
