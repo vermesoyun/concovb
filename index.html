@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>IP Bilgi Paneli</title>
+<title>IP Bilgi Sorgu</title>
 
 <style>
 
@@ -11,12 +11,12 @@ background:#0f172a;
 font-family:Arial;
 color:white;
 text-align:center;
-padding-top:100px;
+padding-top:80px;
 }
 
 h1{
 font-size:40px;
-margin-bottom:40px;
+margin-bottom:30px;
 animation: glow 2s infinite alternate;
 }
 
@@ -27,7 +27,7 @@ to{color:#22c55e;}
 
 .box{
 background:#1e293b;
-width:350px;
+width:400px;
 margin:auto;
 padding:30px;
 border-radius:15px;
@@ -42,18 +42,25 @@ animation: float 3s infinite ease-in-out;
 }
 
 .info{
-margin:15px 0;
+margin:10px 0;
 font-size:18px;
 }
 
+input{
+padding:10px;
+width:220px;
+border-radius:8px;
+border:none;
+margin-top:15px;
+}
+
 button{
-margin-top:20px;
 padding:10px 20px;
 border:none;
 background:#38bdf8;
-border-radius:10px;
+border-radius:8px;
 cursor:pointer;
-font-size:16px;
+margin-left:5px;
 }
 
 button:hover{
@@ -65,16 +72,19 @@ background:#0ea5e9;
 
 <body>
 
-<h1>IP Bilgi Paneli</h1>
+<h1>IP Bilgi Sorgulama</h1>
 
 <div class="box">
 
-<div class="info">IP: <span id="ip">Yükleniyor...</span></div>
-<div class="info">Koordinat: <span id="coord">Yükleniyor...</span></div>
-<div class="info">İnternet Sağlayıcısı: <span id="isp">Yükleniyor...</span></div>
-<div class="info">Ülke: <span id="country">Yükleniyor...</span></div>
+<input id="ipInput" placeholder="IP adresi gir">
+<button onclick="searchIP()">Ara</button>
 
-<button onclick="getIP()">Bilgileri Yenile</button>
+<div class="info">IP: <span id="ip">-</span></div>
+<div class="info">Ülke: <span id="country">-</span></div>
+<div class="info">Şehir: <span id="city">-</span></div>
+<div class="info">Bölge: <span id="region">-</span></div>
+<div class="info">Koordinat: <span id="coord">-</span></div>
+<div class="info">İnternet Sağlayıcısı: <span id="isp">-</span></div>
 
 </div>
 
@@ -84,11 +94,33 @@ async function getIP(){
 
 let response = await fetch("https://ipapi.co/json/");
 let data = await response.json();
+showData(data);
 
-document.getElementById("ip").innerText = data.ip;
-document.getElementById("coord").innerText = data.latitude + " , " + data.longitude;
-document.getElementById("isp").innerText = data.org;
-document.getElementById("country").innerText = data.country_name;
+}
+
+async function searchIP(){
+
+let ip=document.getElementById("ipInput").value;
+
+if(ip==""){
+getIP();
+return;
+}
+
+let response = await fetch("https://ipapi.co/"+ip+"/json/");
+let data = await response.json();
+showData(data);
+
+}
+
+function showData(data){
+
+document.getElementById("ip").innerText=data.ip;
+document.getElementById("country").innerText=data.country_name;
+document.getElementById("city").innerText=data.city;
+document.getElementById("region").innerText=data.region;
+document.getElementById("coord").innerText=data.latitude+" , "+data.longitude;
+document.getElementById("isp").innerText=data.org;
 
 }
 
