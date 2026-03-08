@@ -3,129 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <title>IP Analiz XwX</title>
-
 <style>
-
 body{
-background:#0f172a;
-font-family:Arial;
-color:white;
-text-align:center;
-padding-top:80px;
+  background:#0f172a;
+  font-family:Arial;
+  color:white;
+  text-align:center;
+  padding-top:40px;
+  margin:0;
 }
 
 h1{
-font-size:40px;
-margin-bottom:30px;
-animation: glow 2s infinite alternate;
+  font-size:38px;
+  margin-bottom:25px;
+  color:#38bdf8;
 }
 
-@keyframes glow{
-from{color:#38bdf8;}
-to{color:#22c55e;}
+.container{
+  width:350px;
+  margin:auto;
+  padding:25px;
+  border-radius:15px;
+  box-shadow:0 0 15px #38bdf8;
+  background:#1e293b;
+  transition: transform 0.2s;
 }
 
-.box{
-background:#1e293b;
-width:400px;
-margin:auto;
-padding:30px;
-border-radius:15px;
-box-shadow:0 0 20px #38bdf8;
-animation: float 3s infinite ease-in-out;
-}
-
-@keyframes float{
-0%{transform:translateY(0px);}
-50%{transform:translateY(-10px);}
-100%{transform:translateY(0px);}
-}
-
-.info{
-margin:10px 0;
-font-size:18px;
+.container:hover{
+  transform: translateY(-5px);
 }
 
 input{
-padding:10px;
-width:220px;
-border-radius:8px;
-border:none;
-margin-top:15px;
+  padding:10px;
+  width:80%;
+  border-radius:8px;
+  border:none;
+  margin:10px 0;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
 }
 
 button{
-padding:10px 20px;
-border:none;
-background:#38bdf8;
-border-radius:8px;
-cursor:pointer;
-margin-left:5px;
+  padding:10px 20px;
+  border:none;
+  background:#38bdf8;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.3s;
 }
 
 button:hover{
-background:#0ea5e9;
+  background:#0ea5e9;
 }
 
+.info{
+  margin:8px 0;
+  font-size:16px;
+}
+
+#profile{
+  display:none;
+}
+
+#logoutBtn{
+  margin-top:12px;
+  background:#f87171;
+}
+
+footer{
+  position:fixed;
+  bottom:5px;
+  width:100%;
+  text-align:center;
+  font-size:14px;
+  color:#94a3b8;
+  opacity:0.1;
+  transition: opacity 0.3s;
+}
+
+footer:hover{
+  opacity:1;
+}
 </style>
 </head>
-
 <body>
 
 <h1>IP Bilgi Sorgulama</h1>
 
-<div class="box">
-
-<input id="ipInput" placeholder="IP adresi gir">
-<button onclick="searchIP()">Ara</button>
-
-<div class="info">IP: <span id="ip">-</span></div>
-<div class="info">Ülke: <span id="country">-</span></div>
-<div class="info">Şehir: <span id="city">-</span></div>
-<div class="info">Bölge: <span id="region">-</span></div>
-<div class="info">Koordinat: <span id="coord">-</span></div>
-<div class="info">İnternet Sağlayıcısı: <span id="isp">-</span></div>
-
+<div id="loginBox" class="container">
+  <h2>Giriş Yap</h2>
+  <input id="username" placeholder="Kullanıcı Adı"><br>
+  <input id="password" type="password" placeholder="Şifre"><br>
+  <button onclick="login()">Giriş</button>
 </div>
 
+<div id="profile" class="container">
+  <h2 id="welcome"></h2>
+  <button id="logoutBtn" onclick="logout()">Çıkış Yap</button>
+  <div style="margin-top:15px;">
+    <input id="ipInput" placeholder="IP adresi gir">
+    <button onclick="searchIP()">Ara</button>
+
+    <div class="info">IP: <span id="ip">-</span></div>
+    <div class="info">Ülke: <span id="country">-</span></div>
+    <div class="info">Şehir: <span id="city">-</span></div>
+    <div class="info">Bölge: <span id="region">-</span></div>
+    <div class="info">Koordinat: <span id="coord">-</span></div>
+    <div class="info">İnternet Sağlayıcısı: <span id="isp">-</span></div>
+  </div>
+</div>
+
+<footer>İletişim için: örnek@mail.com | 2026 haklarına sahiptir</footer>
+
 <script>
+const defaultUser = "121212";
+const defaultPass = "121212";
 
+window.onload = function(){
+  if(localStorage.getItem("loggedIn") === "true"){
+    showProfile();
+  } else{
+    document.getElementById("loginBox").style.display="block";
+  }
+}
+
+function login(){
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
+  if(user === defaultUser && pass === defaultPass){
+    localStorage.setItem("loggedIn","true");
+    showProfile();
+  } else{
+    alert("Kullanıcı adı veya şifre hatalı!");
+  }
+}
+
+function logout(){
+  localStorage.setItem("loggedIn","false");
+  document.getElementById("profile").style.display="none";
+  document.getElementById("loginBox").style.display="block";
+}
+
+function showProfile(){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("profile").style.display="block";
+  document.getElementById("welcome").innerText = "Hoşgeldin " + defaultUser;
+  getIP();
+}
+
+// IP sorgulama
 async function getIP(){
-
-let response = await fetch("https://ipapi.co/json/");
-let data = await response.json();
-showData(data);
-
+  let response = await fetch("https://ipapi.co/json/");
+  let data = await response.json();
+  showData(data);
 }
 
 async function searchIP(){
-
-let ip=document.getElementById("ipInput").value;
-
-if(ip==""){
-getIP();
-return;
-}
-
-let response = await fetch("https://ipapi.co/"+ip+"/json/");
-let data = await response.json();
-showData(data);
-
+  let ip=document.getElementById("ipInput").value;
+  if(ip==""){ getIP(); return; }
+  let response = await fetch("https://ipapi.co/"+ip+"/json/");
+  let data = await response.json();
+  showData(data);
 }
 
 function showData(data){
-
-document.getElementById("ip").innerText=data.ip;
-document.getElementById("country").innerText=data.country_name;
-document.getElementById("city").innerText=data.city;
-document.getElementById("region").innerText=data.region;
-document.getElementById("coord").innerText=data.latitude+" , "+data.longitude;
-document.getElementById("isp").innerText=data.org;
-
+  document.getElementById("ip").innerText=data.ip;
+  document.getElementById("country").innerText=data.country_name;
+  document.getElementById("city").innerText=data.city;
+  document.getElementById("region").innerText=data.region;
+  document.getElementById("coord").innerText=data.latitude+" , "+data.longitude;
+  document.getElementById("isp").innerText=data.org;
 }
-
-getIP();
-
 </script>
 
 </body>
