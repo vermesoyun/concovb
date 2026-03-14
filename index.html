@@ -1,168 +1,115 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Valorant Premade</title>
+<title>Valorant Premate</title>
 
 <style>
 
 body{
 margin:0;
 font-family:Arial;
-background:linear-gradient(135deg,#2b0040,#7b2cbf);
-color:white;
-overflow-x:hidden;
-animation:bgMove 10s infinite alternate;
+background:linear-gradient(135deg,#0077ff,#ffffff);
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+color:black;
 }
 
 .container{
-max-width:800px;
-margin:auto;
-padding:30px;
-animation:fade 1s ease;
-}
-
-.card{
-background:rgba(0,0,0,0.6);
-padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-box-shadow:0 0 15px #a855f7;
-animation:slideUp .7s ease;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 25px #c084fc;
+width:400px;
+background:rgba(255,255,255,0.9);
+padding:25px;
+border-radius:15px;
+box-shadow:0 0 20px rgba(0,0,0,0.2);
+text-align:center;
 }
 
 input,select{
-width:100%;
+width:90%;
 padding:10px;
-margin-top:10px;
+margin:8px 0;
 border:none;
 border-radius:8px;
-background:#3b0764;
-color:white;
-transition:.3s;
-}
-
-input:focus,select:focus{
-outline:none;
-box-shadow:0 0 10px #c084fc;
-transform:scale(1.02);
+background:#e6f0ff;
+color:black;
 }
 
 button{
-margin-top:10px;
+width:95%;
 padding:10px;
 border:none;
 border-radius:8px;
-background:#a855f7;
+background:#0077ff;
 color:white;
 cursor:pointer;
-transition:.3s;
 }
 
 button:hover{
-transform:scale(1.08);
-background:#c084fc;
-box-shadow:0 0 15px #c084fc;
+background:#005fcc;
 }
 
-.hidden{
-display:none;
-}
+.hidden{display:none;}
 
-.post{
-background:#2e1065;
+.card{
+margin-top:15px;
 padding:15px;
+background:#f2f8ff;
 border-radius:10px;
-margin-top:10px;
-animation:postIn .6s ease;
-transition:.3s;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-.post:hover{
-transform:scale(1.03);
-box-shadow:0 0 15px #a855f7;
+a{
+color:#0077ff;
+text-decoration:underline;
+cursor:pointer;
 }
 
-@keyframes fade{
-from{opacity:0}
-to{opacity:1}
-}
-
-@keyframes slideUp{
-from{
-transform:translateY(40px);
-opacity:0;
-}
-to{
-transform:translateY(0);
-opacity:1;
-}
-}
-
-@keyframes postIn{
-from{
-transform:scale(.9);
-opacity:0;
-}
-to{
-transform:scale(1);
-opacity:1;
-}
-}
-
-@keyframes bgMove{
-0%{
-background:linear-gradient(135deg,#2b0040,#7b2cbf);
-}
-100%{
-background:linear-gradient(135deg,#3b0764,#9333ea);
-}
-}
+.success{color:green;}
+.error{color:red;}
 
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>Valorant Premade</h1>
+<h2>Valorant Premade</h2>
 
-<div id="auth" class="card">
+<div id="loginBox">
 
-<h3>Kayıt / Giriş</h3>
-
-<input id="user" placeholder="Kullanıcı adı">
+<input id="user" placeholder="Kullanıcı Adı">
 <input id="pass" type="password" placeholder="Şifre">
 
-<button onclick="login()">Giriş / Kayıt</button>
+<button onclick="login()">Giriş Yap</button>
 
-<p id="msg"></p>
+<br><br>
+<a onclick="showRegister()">Kayıt Ol</a>
+
+</div>
+
+<div id="registerBox" class="hidden">
+
+<input id="newUser" placeholder="Yeni Kullanıcı">
+<input id="newPass" type="password" placeholder="Yeni Şifre">
+
+<button onclick="register()">Kayıt Ol</button>
+
+<br><br>
+<a onclick="showLogin()">Giriş Yap</a>
 
 </div>
 
 <div id="panel" class="hidden">
 
-<div class="card">
-
-<h3>Premade Oluştur</h3>
-
-<label>Mod</label>
+<h3>Premate Oluştur</h3>
 
 <select id="mode">
 <option>Derecesiz</option>
 <option>Rekabete Dayalı</option>
 </select>
-
-<label>Rank</label>
 
 <select id="rank">
 <option>Demir</option>
@@ -175,105 +122,117 @@ background:linear-gradient(135deg,#3b0764,#9333ea);
 <option>Radyant</option>
 </select>
 
-<label>Grup Kodu</label>
+<input id="code" placeholder="Grup Kodu">
 
-<input id="code" placeholder="VALO123">
+<button onclick="post()">Paylaş</button>
 
-<button onclick="postPremade()">Paylaş</button>
+<p id="limitMsg"></p>
 
-</div>
-
-<div class="card">
-
-<h3>Aktif Premadeler</h3>
-
+<h3>Aktif Kodlar</h3>
 <div id="posts"></div>
 
 </div>
 
-</div>
+<p id="msg"></p>
 
 </div>
 
 <script>
 
+function showRegister(){
+loginBox.classList.add("hidden")
+registerBox.classList.remove("hidden")
+}
+
+function showLogin(){
+registerBox.classList.add("hidden")
+loginBox.classList.remove("hidden")
+}
+
+function register(){
+let u=newUser.value
+let p=newPass.value
+if(!u||!p){msg("Boş bırakma","error");return;}
+localStorage.setItem("user",u)
+localStorage.setItem("pass",p)
+msg("Kayıt başarılı","success")
+showLogin()
+}
+
 function login(){
+let u=user.value
+let p=pass.value
+if(u===localStorage.getItem("user") && p===localStorage.getItem("pass")){
+loginBox.classList.add("hidden")
+registerBox.classList.add("hidden")
+panel.classList.remove("hidden")
+msg("Giriş başarılı","success")
+loadPosts()
+}else{
+msg("Yanlış bilgiler","error")
+}
+}
 
-let u=document.getElementById("user").value
-let p=document.getElementById("pass").value
+function post(){
 
-if(!u || !p){
-msg("Bilgileri gir")
+let today=new Date().toDateString()
+let limitData=JSON.parse(localStorage.getItem("limitData")||"{}")
+
+if(limitData.date!==today){
+limitData={date:today,count:0}
+}
+
+if(limitData.count>=3){
+limitMsg.innerText="Bugün sınıra ulaştınız ❌"
+limitMsg.className="error"
 return
 }
 
-localStorage.setItem("user",u)
-localStorage.setItem("pass",p)
-
-document.getElementById("auth").style.display="none"
-document.getElementById("panel").classList.remove("hidden")
-
-loadPosts()
-
-}
-
-function msg(t){
-document.getElementById("msg").innerText=t
-}
-
-function postPremade(){
-
-let mode=document.getElementById("mode").value
-let rank=document.getElementById("rank").value
-let code=document.getElementById("code").value
+let mode=modeSelect.value
+let rank=rankSelect.value
+let code=codeInput.value
 let user=localStorage.getItem("user")
+
+if(!code)return
 
 let time=new Date().toLocaleTimeString()
 
-let posts=JSON.parse(localStorage.getItem("posts") || "[]")
-
-posts.unshift({
-user:user,
-mode:mode,
-rank:rank,
-code:code,
-time:time
-})
-
+let posts=JSON.parse(localStorage.getItem("posts")||"[]")
+posts.unshift({user,mode,rank,code,time})
 localStorage.setItem("posts",JSON.stringify(posts))
 
-loadPosts()
+limitData.count++
+localStorage.setItem("limitData",JSON.stringify(limitData))
 
+limitMsg.innerText="Paylaşıldı"
+limitMsg.className="success"
+
+loadPosts()
 }
 
 function loadPosts(){
 
-let posts=JSON.parse(localStorage.getItem("posts") || "[]")
-
+let posts=JSON.parse(localStorage.getItem("posts")||"[]")
 let html=""
 
 posts.forEach(p=>{
-
 html+=`
-<div class="post">
+<div class="card">
 <b>${p.user}</b><br>
 Mod: ${p.mode}<br>
 Rank: ${p.rank}<br>
-Grup Kodu: <b>${p.code}</b><br>
+Kod: <b>${p.code}</b><br>
 ⏱ ${p.time}
 </div>
 `
-
 })
 
-document.getElementById("posts").innerHTML=html
-
+postsDiv.innerHTML=html
 }
 
-if(localStorage.getItem("user")){
-document.getElementById("auth").style.display="none"
-document.getElementById("panel").classList.remove("hidden")
-loadPosts()
+function msg(text,type){
+msgBox.innerText=text
+msgBox.className=type
 }
 
 </script>
